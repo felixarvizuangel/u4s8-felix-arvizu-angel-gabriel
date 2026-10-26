@@ -1,26 +1,41 @@
-# U4S7 — Félix Arvizu Ángel Gabriel
+# U4S8 — Félix Arvizu Ángel Gabriel
 
 **Grupo:** DSM 4-1 · **Matrícula:** 25311014
 
 ## Demo en vivo (producción)
-https://u4s7-felix-arvizu-angel-gabriel.onrender.com
+https://u4s8-felix-arvizu-angel-gabriel.onrender.com
 
-## Semana 7 — Pulido funcional y UX
+## Descripción
+Sistema web para administrar servicios. Cada usuario crea su cuenta, inicia sesión
+y puede crear, editar, eliminar, buscar y paginar **solo sus propios** servicios.
 
-### Lo nuevo
-- **Paginación:** el listado de servicios muestra 5 por página, con «← Anterior», «Siguiente →» y «Página X de Y».
-- **Búsqueda por título:** buscador con `?q=...` que no distingue mayúsculas, con opción «Quitar búsqueda».
-- **Estado vacío:** muestra un mensaje distinto si todavía no hay servicios o si la búsqueda no encontró nada.
-- **Búsqueda + paginación juntas:** al cambiar de página no se pierde lo que se buscó.
-- **Responsivo:** en celular la tabla se desliza de lado sin romper la página.
-- **Accesibilidad:** `aria-label` en el buscador y en la barra de paginación.
+## Stack
+- **Django** (Python) — backend, vistas, formularios y autenticación
+- **MySQL en Aiven** — base de datos en la nube
+- **Tailwind CSS** — estilos de las plantillas
+- **Render** — Web Service con gunicorn y whitenoise, HTTPS automático
 
-### Archivos modificados
-- `core/views.py` — vista `servicios` con `Paginator` y filtro `titulo__icontains`
-- `core/templates/core/servicios.html` — buscador, estado vacío y controles de página
+## Funcionalidades
+- Registro, login y logout propios con `django.contrib.auth`
+- CRUD de servicios con ModelForms y validación del precio
+- Listado con paginación (5 por página) y búsqueda por título
+- Mensajes flash y estado vacío
+- Seguridad: `DEBUG=False`, `SECRET_KEY` propia, `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS` y `.env` fuera del repo
 
-### Hallazgos de la UI review
-1. Los enlaces «Editar» y «Eliminar» eran muy pequeños para tocarlos en celular (menos de 44px de alto); se les agregó relleno (`py-2`).
-2. El texto gris del estado vacío y de «Página X de Y» (`text-slate-500`) se veía claro; se oscureció a `text-slate-600`.
-3. Con la tecla Tab no siempre se notaba el foco en los enlaces; se agregó `focus:outline` visible.
-4. A ~375px la tabla ya no rompe la página gracias a `overflow-x-auto`.
+## Prueba de aislamiento por usuario (Semana 6)
+Registré usuario_a y usuario_b y creé 2 servicios con cada uno.
+Con sesión de usuario_b, /servicios/ solo muestra sus 2 servicios, nunca los de usuario_a.
+Con usuario_b escribí a mano /servicios/<id>/editar/ con el id de un servicio de usuario_a
+y respondió 404 (Not Found), gracias al filtro `propietario=request.user` en `views.py`.
+
+## Historial de unidades
+| Práctica | Tema |
+|---|---|
+| u1s1 | Sitio estático en Render |
+| u1s2 | Tailwind CSS |
+| u2s3 | Django + MySQL en Aiven |
+| u2s4 | Modelos y deploy en Render |
+| u3s5 | CRUD con ModelForms |
+| u3s6 | Autenticación, sesiones y seguridad |
+| u4s7 | Paginación, búsqueda y pulido de UX |
+| u4s8 | Deploy final, Release v1.0 y defensa |
